@@ -4,10 +4,8 @@
 
 void InitGLFW(int major, int minor, int prof) {
   glfwInit();
-  // Set used OpenGL version to 3.3
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
-  // Set OpenGL profile to Core; Modern OpenGL (no backwards compatability)
   glfwWindowHint(GLFW_OPENGL_PROFILE, prof);
 
 #if defined(__APPLE__)
