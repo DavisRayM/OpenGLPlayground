@@ -1,0 +1,13 @@
+# Disallow everything
+*
+
+# Allow only
+!.gitignore
+!CMakeLists.txt
+!README.md
+!include/
+!include/**/*
+!src/
+!src/**/*
+!vendor/
+!vendor/**/*
