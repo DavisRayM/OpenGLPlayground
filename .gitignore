@@ -2,6 +2,7 @@
 *
 
 # Allow only
+!.clang-format
 !.gitignore
 !CMakeLists.txt
 !README.md
