@@ -22,4 +22,5 @@ target_link_libraries(BuildTest
     OpenGL::GL
     glfw
     glad
+    toolkit
 )
