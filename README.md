@@ -9,3 +9,7 @@ Random collection of OpenGL programs and utilities.
 - libwayland-dev: [Arch Linux](https://archlinux.org/packages/extra/x86_64/wayland/)
 - libxkbcommon-dev: [Arch Linux](https://archlinux.org/packages/extra/x86_64/libxkbcommon/)
 - xorg-dev: [Arch Linux](https://archlinux.org/packages/extra/x86_64/xorg-server/)
+
+# Resources
+
+- [LearnOpenGL](https://learnopengl.com/)
