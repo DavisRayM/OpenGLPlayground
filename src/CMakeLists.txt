@@ -1,2 +1,3 @@
 add_subdirectory(1.1_Hello_Win_Clear)
 add_subdirectory(1.2_Hello_Triangle)
+add_subdirectory(1.2_Hello_Triangle_Indexed)
