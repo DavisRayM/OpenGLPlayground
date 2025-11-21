@@ -27,6 +27,7 @@ const float kVertices[] = {
   0.4, 0.5, 0.0, // Top
 };
 // clang-format on
+constexpr int kVertexCount = std::size(kVertices) / 3;
 
 /*
  * OpenGL Objects
@@ -93,7 +94,7 @@ int main() {
 
     glUseProgram(program);
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, std::size(kVertices) / 3);
+    glDrawArrays(GL_TRIANGLES, 0, kVertexCount);
     glBindVertexArray(0);
     glUseProgram(0);
 
