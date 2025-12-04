@@ -14,22 +14,24 @@ const char* kWindowTitle = "Multi Shader";
 /*
  * OpenGL Pointers
  */
-unsigned int VAO[2], VBO[2];
+unsigned int VAO, VBO, EBO;
 
 /*
  * Vertex Data
  */
 // clang-format off
-const float kVertices1[] = {
-  -0.8, -0.5, 0.0, // Left
-  0.0, -0.5, 0.0, // Right
-  -0.4, 0.5, 0.0,  // Top
+const float kVertices[] = {
+  -0.8, -0.5, 0.0, // Left 1
+  -0.4, 0.5, 0.0,  // Top 1
+  0.0, -0.5, 0.0, // Right 1 | Left 2
+  0.8, -0.5, 0.0, // Right 2
+  0.4, 0.5, 0.0, // Top 2
 };
-const float kVertices2[] = {
-  0.0, -0.5, 0.0, // Left
-  0.8, -0.5, 0.0, // Right
-  0.4, 0.5, 0.0, // Top
+const unsigned int kIndices[] = {
+  0, 1, 2,
+  2, 3, 4,
 };
+// clang-format on
 
 /*
  * Shader Source
@@ -60,10 +62,6 @@ void main() {
   color = vec4(1.0, 0.2, 0.8, 1.0);
 }
 )";
-
-// clang-format on
-constexpr int kVertexCount1 = std::size(kVertices1) / 3;
-constexpr int kVertexCount2 = std::size(kVertices2) / 3;
 
 static int Fail(const char* desc);
 static void Resize(GLFWwindow* window, int width, int height);
@@ -104,12 +102,12 @@ int main(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(program1);
-    glBindVertexArray(VAO[0]);
-    glDrawArrays(GL_TRIANGLES, 0, kVertexCount1);
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
     glUseProgram(program2);
-    glBindVertexArray(VAO[1]);
-    glDrawArrays(GL_TRIANGLES, 0, kVertexCount1);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT,
+                   (void*)(3 * sizeof(GLuint)));
 
     glBindVertexArray(0);
     glUseProgram(0);
@@ -118,8 +116,11 @@ int main(void) {
     glfwPollEvents();
   }
 
-  glDeleteVertexArrays(2, VAO);
-  glDeleteBuffers(2, VBO);
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
+  glDeleteProgram(program1);
+  glDeleteProgram(program2);
 
   glfwTerminate();
   return 0;
@@ -139,22 +140,19 @@ static void ProcessInput(GLFWwindow* win) {
 }
 
 static void BufferData() {
-  glGenVertexArrays(2, VAO);
-  glGenBuffers(2, VBO);
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
 
-  glBindVertexArray(VAO[0]);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(kVertices1), kVertices1, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(kVertices), kVertices, GL_STATIC_DRAW);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
   glEnableVertexAttribArray(0);
-
-  glBindVertexArray(VAO[1]);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-
-  glBufferData(GL_ARRAY_BUFFER, sizeof(kVertices2), kVertices2, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
-  glEnableVertexAttribArray(0);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(kIndices), kIndices,
+               GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
