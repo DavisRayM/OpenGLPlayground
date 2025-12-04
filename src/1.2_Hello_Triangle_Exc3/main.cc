@@ -153,9 +153,6 @@ static void BufferData() {
   glEnableVertexAttribArray(0);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(kIndices), kIndices,
                GL_STATIC_DRAW);
-
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
 }
 
 static bool CompileShader(unsigned int id) {
